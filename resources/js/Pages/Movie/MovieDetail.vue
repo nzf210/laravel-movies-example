@@ -44,10 +44,9 @@ console.log('data detail', props.data.movie);
                     </div>
     
                     <div :x-data="{ isOpen: false }">
-                       
                             <div class="mt-12" v-if="props.data.movie.videos.results.length > 0">
                                 <button
-                                    @click="isOpen = true"
+                                    @click="() => {isOpen = true; console.log('clicked frame')} "
                                     class="flex inline-flex items-center bg-orange-500 text-gray-900 rounded font-semibold px-5 py-4 hover:bg-orange-600 transition ease-in-out duration-150"
                                 >
                                     <svg class="w-6 fill-current" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M10 16.5l6-4.5-6-4.5v9zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
@@ -55,7 +54,7 @@ console.log('data detail', props.data.movie);
                                 </button>
                             </div>
     
-                            <template x-if="isOpen">
+                            <template v-if="isOpen">
                                 <div
                                     style="background-color: rgba(0, 0, 0, .5);"
                                     class="fixed top-0 left-0 w-full h-full flex items-center shadow-lg overflow-y-auto"
@@ -71,7 +70,7 @@ console.log('data detail', props.data.movie);
                                             </div>
                                             <div class="modal-body px-8 py-8">
                                                 <div class="responsive-container overflow-hidden relative" style="padding-top: 56.25%">
-                                                    <iframe class="responsive-iframe absolute top-0 left-0 w-full h-full" :src="'https://www.youtube.com/embed/'+ props.data.movie.videos.results[0].key" style="border:0;" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                                                    <iframe class="responsive-iframe absolute top-0 left-0 w-full h-full" title="trailer" :src="'https://www.youtube.com/embed/'+ props.data.movie.videos.results[0].key" style="border:0;" allow="autoplay; encrypted-media" allowfullscreen></iframe>
                                                 </div>
                                             </div>
                                         </div>
@@ -105,7 +104,7 @@ console.log('data detail', props.data.movie);
             </div>
         </div> <!-- end movie-cast -->
     
-        <div class="movie-images" x-data="{ isOpen: false, image: ''}">
+        <!-- <div class="movie-images" :x-data="{ isOpen: false, image: ''}">
             <div class="container mx-auto px-4 py-16">
                 <h2 class="text-4xl font-semibold">Images</h2>
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
@@ -117,8 +116,8 @@ console.log('data detail', props.data.movie);
                                 "
                                 href="#"
                                 >
-                                <!-- image ='https://image.tmdb.org/t/p/original/'+image.file_path -->
-                                <img :src="'https://image.tmdb.org/t/p/w500/'+image.file_path" alt="image1" class="hover:opacity-75 transition ease-in-out duration-150">
+                                image ='https://image.tmdb.org/t/p/original/'+image.file_path
+                                <img :src="'https://image.tmdb.org/t/p/w500/'+image.file_path" :alt="image.id" class="hover:opacity-75 transition ease-in-out duration-150">
                             </a>
                         </div>
                 </div>
@@ -144,6 +143,6 @@ console.log('data detail', props.data.movie);
                     </div>
                 </div>
             </div>
-        </div> <!-- end movie-images -->
+        </div>  -->
     </Layout>
 </template>
