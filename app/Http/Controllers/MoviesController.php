@@ -12,6 +12,7 @@ class MoviesController extends Controller
 {
     public function index()
     {
+        try {
         $popularMovies = Http
         ::withToken(config('services.tmdb.token'))
             ->get('https://api.themoviedb.org/3/movie/popular')
@@ -31,16 +32,27 @@ class MoviesController extends Controller
             $genres,
         );
         return Inertia::render('Welcome',['data' => $viewModel]);
+    } catch (\Throwable $th) {
+        $viewModel = [
+            'popularMovies' => '',
+            'nowPlayingMovies' => '',
+            'genres' => '',
+        ];
+        return Inertia::render('Welcome',['data' => $viewModel]);
+    }
     }
 
     public function show($id)
     {
-        $movie = Http::withToken(config('services.tmdb.token'))
+        try {
+            $movie = Http::withToken(config('services.tmdb.token'))
             ->get('https://api.themoviedb.org/3/movie/'.$id.'?append_to_response=credits,videos,images')
             ->json();
-
-        $viewModel = new MovieViewModel($movie);
-
-        return Inertia::render('Movie/MovieDetail',['data' => $viewModel]);
+            $viewModel = new MovieViewModel($movie);
+            return Inertia::render('Movie/MovieDetail',['data' => $viewModel]);
+        } catch (\Throwable $th) {
+            $viewModel = new MovieViewModel([]);
+            return Inertia::render('Movie/MovieDetail',['data' => $viewModel]);
+        }
     }
 }
