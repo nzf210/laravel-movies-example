@@ -1,0 +1,3 @@
+import{d as a,o as n,c as l,w as r,b as e,t as c,u as i,Z as p,g as _,a as u,F as m}from"./app-95o2QigZ.js";const x=a({__name:"Head",props:{title:{}},setup(o){return(t,s)=>(n(),l(i(p),null,{default:r(()=>[e("title",null,`
+            `+c(t.title)+`
+        `,1)]),_:1}))}}),d=e("body",null,[e("nav",null,[e("div",{class:"container mx-auto flex items-center justify-between px-4 py-6"}," xxxxxx ")])],-1),y=a({__name:"Welcome",props:{canLogin:{type:Boolean},canRegister:{type:Boolean},laravelVersion:{},phpVersion:{}},setup(o){return(t,s)=>(n(),_(m,null,[u(x,{title:"Welcome - Movie Film"}),d],64))}});export{y as default};
