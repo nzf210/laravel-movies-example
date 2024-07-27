@@ -1,14 +1,16 @@
 <script setup lang="ts">
     import Header from "@/Components/Head.vue";
     import Layout from "@/Pages/Index.vue";
-import { ref } from "vue";
+    import { Link } from "@inertiajs/vue3";
+    import { ref } from "vue";
 
-   const props = defineProps<{
+    const props = defineProps<{
         data: any;
     }>();
+
     const isOpen= ref<boolean>(false);
     const isOpenPlay= ref<boolean>(false);
-console.log('data detail', props.data.movie);
+    const images = ref<string>('');
 </script>
 
 <template>
@@ -47,8 +49,8 @@ console.log('data detail', props.data.movie);
                     <div :x-data="{ isOpen: false }">
                             <div class="mt-12" v-if="props.data.movie.videos.results.length > 0">
                                 <button
-                                    @click="() => {isOpen = true; console.log('clicked frame')} "
-                                    class="flex inline-flex items-center bg-orange-500 text-gray-900 rounded font-semibold px-5 py-4 hover:bg-orange-600 transition ease-in-out duration-150"
+                                    @click="() => {isOpen = true} "
+                                    class="flex items-center bg-orange-500 text-gray-900 rounded font-semibold px-5 py-4 hover:bg-orange-600 transition ease-in-out duration-150"
                                 >
                                     <svg class="w-6 fill-current" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M10 16.5l6-4.5-6-4.5v9zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
                                     <span class="ml-2">Play Trailer</span>
@@ -57,7 +59,7 @@ console.log('data detail', props.data.movie);
                             <div class="mt-12" v-if="props.data.movie.videos.results.length > 0">
                                 <button
                                     @click="() => {isOpenPlay = true; console.log('clicked frame')} "
-                                    class="flex inline-flex items-center bg-orange-500 text-gray-900 rounded font-semibold px-5 py-4 hover:bg-orange-600 transition ease-in-out duration-150"
+                                    class="flex items-center bg-orange-500 text-gray-900 rounded font-semibold px-5 py-4 hover:bg-orange-600 transition ease-in-out duration-150"
                                 >
                                     <svg class="w-6 fill-current" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M10 16.5l6-4.5-6-4.5v9zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
                                     <span class="ml-2">Watching</span>
@@ -137,13 +139,13 @@ console.log('data detail', props.data.movie);
                 <h2 class="text-4xl font-semibold">Cast</h2>
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
                         <div class="mt-8" v-for="cast in props.data.movie.cast">
-                            <a :href="route('actors.show', cast.id)">
+                            <Link :href="route('actors.show', cast.id)">
                                 <img :src="cast.profile_path" :alt="cast.id" class="hover:opacity-75 transition ease-in-out duration-150">
-                            </a>
+                            </Link>
                             <div class="mt-2">
-                                <a :href="route('actors.show', cast.id)" class="text-lg mt-2 hover:text-gray:300">{{ cast.name }}</a>
+                                <Link :href="route('actors.show', cast.id)" class="text-lg mt-2 hover:text-gray:300">{{ cast.name }}</Link>
                                 <div class="text-sm text-gray-400">
-                                    {{ cast.character }}
+                                    {{ cast.character  }}
                                 </div>
                             </div>
                         </div>
@@ -151,46 +153,53 @@ console.log('data detail', props.data.movie);
             </div>
         </div> <!-- end movie-cast -->
     
-        <!-- <div class="movie-images" :x-data="{ isOpen: false, image: ''}">
+        <div class="movie-images" >
             <div class="container mx-auto px-4 py-16">
                 <h2 class="text-4xl font-semibold">Images</h2>
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-                        <div class="mt-8" v-for="image in props.data.movie.images">
+                        <div class="mt-8" v-for="imgs in props.data.movie.images">
                             <a
                                 @click.prevent="() => {
-                                    isOpen = true;
+                                    if(imgs.file_path){
+                                        images = 'https://image.tmdb.org/t/p/original/'+imgs.file_path
+                                    }
                                 }
                                 "
                                 href="#"
                                 >
-                                image ='https://image.tmdb.org/t/p/original/'+image.file_path
-                                <img :src="'https://image.tmdb.org/t/p/w500/'+image.file_path" :alt="image.id" class="hover:opacity-75 transition ease-in-out duration-150">
+                                <img :src="'https://image.tmdb.org/t/p/w500/'+imgs.file_path" 
+                                        :alt="imgs.vote_average" 
+                                class="hover:opacity-75 transition ease-in-out duration-150">
                             </a>
                         </div>
-                </div>
+                    </div>
     
                 <div
                     style="background-color: rgba(0, 0, 0, .5);"
                     class="fixed top-0 left-0 w-full h-full flex items-center shadow-lg overflow-y-auto"
-                    :x-show="isOpen"
+                    v-if="images !== ''"
                 >
                     <div class="container mx-auto lg:px-32 rounded-lg overflow-y-auto">
                         <div class="bg-gray-900 rounded">
                             <div class="flex justify-end pr-4 pt-2">
                                 <button
-                                    @click="isOpen = false"
-                                    @keydown.escape.window="isOpen = false"
+                                    @click="() => {
+                                        images = '';
+                                    }"
+                                    @keydown.escape.window="() => {
+                                        images = '';
+                                    }"
                                     class="text-3xl leading-none hover:text-gray-300">&times;
                                 </button>
                             </div>
                             <div class="modal-body px-8 py-8">
-                                <img src="#" alt="poster">
+                                <img :src="images" alt="poster">
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>  -->
+        </div> 
     </Layout>
 </template>
 

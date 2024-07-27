@@ -8,7 +8,6 @@ use Spatie\ViewModels\ViewModel;
 
 class TvViewModel extends ViewModel
 {
-    use HasFactory;
     public $popularTv;
     public $topRatedTv;
     public $genres;

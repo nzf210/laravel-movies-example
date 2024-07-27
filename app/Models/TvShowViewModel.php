@@ -8,7 +8,7 @@ use Spatie\ViewModels\ViewModel;
 
 class TvShowViewModel extends ViewModel
 {
-    use HasFactory;
+    
     public $tvshow;
 
     public function __construct($tvshow)

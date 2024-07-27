@@ -3,13 +3,15 @@ import Header from "@/Components/Head.vue";
 import Layout from "@/Pages/Index.vue";
 import MainPage from "./MainPage.vue";
 
-defineProps<{
+const props = defineProps<{
     canLogin?: boolean;
     canRegister?: boolean;
     laravelVersion: string;
     phpVersion: string;
     data: any;
 }>();
+
+console.log('data wel', props.data);
 
 function handleImageError() {
     document.getElementById('screenshot-container')?.classList.add('!hidden');

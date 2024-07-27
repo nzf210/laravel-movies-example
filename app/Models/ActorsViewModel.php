@@ -6,14 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Spatie\ViewModels\ViewModel;
 class ActorsViewModel extends ViewModel
 {
-    use HasFactory;
     public $popularActors;
     public $page;
 
     public function __construct($popularActors, $page)
     {
         $this->popularActors = $popularActors;
-
         $this->page = $page;
     }
 

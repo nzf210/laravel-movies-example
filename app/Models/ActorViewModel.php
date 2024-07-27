@@ -8,7 +8,6 @@ use Spatie\ViewModels\ViewModel;
 
 class ActorViewModel extends ViewModel
 {
-    use HasFactory;
     public $actor;
     public $social;
     public $credits;
