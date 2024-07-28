@@ -12,7 +12,9 @@
         "APP_ENV": "production",
         "APP_DEBUG": "true",
         "APP_URL": "https://movieq-or6ef7xab-nzf210s-projects.vercel.app",
- 
+        "APP_KEY": "base64:7wUxlLX+nrCDCmEQYeadd0OzjUwk/HmFaFF+5Unavlk=",
+
+
         "APP_CONFIG_CACHE": "/tmp/config.php",
         "APP_EVENTS_CACHE": "/tmp/events.php",
         "APP_PACKAGES_CACHE": "/tmp/packages.php",
