@@ -2,7 +2,7 @@
     import { Link } from '@inertiajs/vue3';
 
     defineProps<{
-        movie: any
+        movie: any;
     }>();
 </script>
 

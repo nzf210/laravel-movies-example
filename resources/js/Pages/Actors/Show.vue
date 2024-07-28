@@ -1,15 +1,13 @@
 <script setup lang="ts">
     import Header from "@/Components/Head.vue";
     import Layout from "@/Pages/Index.vue";
-import { Link } from "@inertiajs/vue3";
+    import { Link } from "@inertiajs/vue3";
     const props = defineProps<{
         actor: any,
         social: any,
         data: any,
     }>();
 
-    console.log('data actors show', props.data);
-    
 </script>
 
 

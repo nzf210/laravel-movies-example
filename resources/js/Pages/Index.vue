@@ -5,7 +5,7 @@
 
 <template> 
         <body class="h-screen">
-            <Navbar />
+            <Navbar/>
             <div class="min-h-screen">
                 <slot/>
             </div>

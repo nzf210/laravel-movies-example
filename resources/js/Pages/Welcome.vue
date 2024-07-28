@@ -11,8 +11,6 @@ const props = defineProps<{
     data: any;
 }>();
 
-console.log('data wel', props.data);
-
 function handleImageError() {
     document.getElementById('screenshot-container')?.classList.add('!hidden');
     document.getElementById('docs-card')?.classList.add('!row-span-1');

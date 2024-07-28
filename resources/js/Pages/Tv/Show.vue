@@ -7,7 +7,6 @@
     const props = defineProps<{
         data: any;
     }>();
-    console.log('data tv show details', props.data.tvshow);
     const isOpen = ref<boolean>(false);
     const isOpenTv = ref<boolean>(false);
     const images = ref('');
