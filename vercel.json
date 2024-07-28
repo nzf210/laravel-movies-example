@@ -3,9 +3,7 @@
       "framework": null,
     "functions": {
         "api/index.php": { "runtime": "vercel-php@0.6.0" },
-        "api/file.js": {
-                        "includeFiles": "greet.cjs"
-                        }
+        "api/file.js": { "includeFiles": "greet.cjs" }
     },
     "routes": [{
         "src": "/(.*)",
@@ -13,8 +11,8 @@
     }],
     "env": {
         "APP_ENV": "production",
-        "APP_DEBUG": "true",
-        "APP_URL": "https://movieq-or6ef7xab-nzf210s-projects.vercel.app",
+        "APP_DEBUG": "false",
+        "APP_URL": "https://movie210.vercel.app",
         "APP_KEY": "base64:7wUxlLX+nrCDCmEQYeadd0OzjUwk/HmFaFF+5Unavlk=",
 
 
