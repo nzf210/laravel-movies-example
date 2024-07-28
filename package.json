@@ -22,6 +22,7 @@
   "type": "module",
   "dependencies": {
     "@vueuse/core": "10.7.2",
-    "infinite-scroll": "^4.0.1"
+    "infinite-scroll": "^4.0.1",
+    "vercel": "^35.2.1"
   }
 }

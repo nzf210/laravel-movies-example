@@ -17,10 +17,6 @@
             searchInput.value?.focus();
         }
     };
-
-    // const props = defineProps<{
-    //     page:any;
-    // }>();
     
         let debounceTimeout: any = null;
 
@@ -87,7 +83,7 @@
                             <li class="border-b border-gray-700 flex flex-1" v-for="($result , index) in searchResults"
                                 @keydown="($event) => { if ($event.key === 'Tab') {if(index === searchResults.length - 1){ isOpen = false } } }">
                                 <Link  
-                                    :href="route('movies.show', $result.id)" class="block hover:bg-gray-700 px-3 py-3 flex items-center transition ease-in-out duration-150">
+                                    :href="route('movies.show', $result.id)" class=" hover:bg-gray-700 px-3 py-3 flex items-center transition ease-in-out duration-150">
                                     <img v-if="$result.poster_path" :src="'https://image.tmdb.org/t/p/w92/'+$result.poster_path" alt="poster" class="w-8">
                                     <img v-else src="https://via.placeholder.com/50x75" alt="poster" class="w-8">
                                     <span class="ml-4 w-52">
