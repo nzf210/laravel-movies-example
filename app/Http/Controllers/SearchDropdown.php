@@ -8,7 +8,7 @@ use Inertia\Inertia;
 
 class SearchDropdown extends Controller
 {
-    public function index($qry)
+    public function index($qry='')
     {
         $searchResults = [];
         try {
@@ -18,7 +18,7 @@ class SearchDropdown extends Controller
                     ->json()['results'];
             }
             
-        session(['search' =>  collect($searchResults)->take(7)]);
+        session(['search' =>  collect($searchResults)->take(7) ?? []]);
         return back()->with('search',  collect($searchResults)->take(7));
         } catch (\Throwable $th) {
             return back()->with(['search' =>  []]);

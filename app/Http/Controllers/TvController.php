@@ -6,31 +6,38 @@ use App\Models\TvShowViewModel;
 use App\Models\TvViewModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 
 class TvController extends Controller
 {
     public function index()
     {
-        $popularTv = Http::withToken(config('services.tmdb.token'))
+        try {
+            $popularTv = Http::withToken(config('services.tmdb.token'))
             ->get('https://api.themoviedb.org/3/tv/popular')
             ->json()['results'];
 
-        $topRatedTv = Http::withToken(config('services.tmdb.token'))
-            ->get('https://api.themoviedb.org/3/tv/top_rated')
-            ->json()['results'];
+            $topRatedTv = Http::withToken(config('services.tmdb.token'))
+                ->get('https://api.themoviedb.org/3/tv/top_rated')
+                ->json()['results'];
 
-        $genres = Http::withToken(config('services.tmdb.token'))
-            ->get('https://api.themoviedb.org/3/genre/tv/list')
-            ->json()['genres'];
+            $genres = Http::withToken(config('services.tmdb.token'))
+                ->get('https://api.themoviedb.org/3/genre/tv/list')
+                ->json()['genres'];
 
-        $viewModel = new TvViewModel(
-            $popularTv,
-            $topRatedTv,
-            $genres,
-        );
+            $viewModel = new TvViewModel(
+                $popularTv,
+                $topRatedTv,
+                $genres,
+            );
 
-        return Inertia::render('Tv/Index',['data' => $viewModel]);
+            return Inertia::render('Tv/Index',['data' => $viewModel]);
+        } catch (\Throwable $th) {
+            Log::info( 'Tv/Index: '.$th);
+            return Inertia::render('Tv/Index',['data' => []]);
+        }
+        
     }
 
     public function show($id)

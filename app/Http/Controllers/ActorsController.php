@@ -13,33 +13,42 @@ class ActorsController extends Controller
 {
     public function index($page = 1)
     {
-        abort_if($page > 500, 204);
         Log::info( $page);
-        $popularActors = Http::withToken(config('services.tmdb.token'))
+        try {
+            abort_if($page > 500, 204);
+            $popularActors = Http::withToken(config('services.tmdb.token'))
             ->get("https://api.themoviedb.org/3/person/popular?page=".$page)
             ->json()['results'];
-
-        $viewModel = new ActorsViewModel($popularActors, $page);
-        return Inertia::render('Actors/Index', ['data' => $viewModel]);
+            $viewModel = new ActorsViewModel($popularActors, $page);
+            return Inertia::render('Actors/Index', ['data' => $viewModel]);
+        } catch (\Throwable $th) {
+            Log::info( 'Index actor error: '.$th);
+            return Inertia::render('Actors/Index', ['data' => []]);
+        }
+        
     }
 
     public function show($id)
     {
-        $actor = Http::withToken(config('services.tmdb.token'))
+        try {
+            $actor = Http::withToken(config('services.tmdb.token'))
             ->get(GET_API.$id)
             ->json();
 
-        $social = Http::withToken(config('services.tmdb.token'))
-            ->get(GET_API.$id.'/external_ids')
-            ->json();
+            $social = Http::withToken(config('services.tmdb.token'))
+                ->get(GET_API.$id.'/external_ids')
+                ->json();
 
-        $credits = Http::withToken(config('services.tmdb.token'))
-            ->get(GET_API.$id.'/combined_credits')
-            ->json();
+            $credits = Http::withToken(config('services.tmdb.token'))
+                ->get(GET_API.$id.'/combined_credits')
+                ->json();
 
-        $viewModel = new ActorViewModel($actor, $social, $credits);
+            $viewModel = new ActorViewModel($actor, $social, $credits);
 
-        return Inertia::render('Actors/Show', ['data' => $viewModel]);
-
+            return Inertia::render('Actors/Show', ['data' => $viewModel]);
+        } catch (\Throwable $th) {
+            Log::info( 'Show actor error: '.$th);
+            return Inertia::render('Actors/Show', ['data' => []]);
+        }
     }
 }
