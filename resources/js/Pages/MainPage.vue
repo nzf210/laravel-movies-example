@@ -2,9 +2,7 @@
     import MovieCard from '@/Components/Movie/Card.vue';
     const props =defineProps<{
         data: any;
-    }>();
-    console.log('props', props);
-    
+    }>();    
 </script>
 
 <template>

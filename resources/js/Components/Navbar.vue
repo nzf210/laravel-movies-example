@@ -1,10 +1,36 @@
 <script setup lang="ts">
-import { Link } from '@inertiajs/vue3';
-import IconMovie from "@/Icons/Movie.vue";
-import Search from "@/Components/Search.vue";
+    import { Link, router } from '@inertiajs/vue3';
+    import IconMovie from "@/Icons/Movie.vue";
+    import Search from "@/Components/Search.vue";
+    import Spiner from "@/Components/Spiner.vue";
+    import { ref } from 'vue';
+
+    let loadingTimeout: ReturnType<typeof setTimeout> | null = null;
+    let currentNavigationId: number | null = null;
+    const loading_store = ref(false);
+
+    router.on("start", () => {
+    currentNavigationId = Date.now();
+    const navigationId = currentNavigationId;
+    loadingTimeout = setTimeout(() => {
+                if (currentNavigationId === navigationId) {
+                loading_store.value = true;
+            }
+        }, 300);
+    });
+
+    router.on("finish", () => {
+    if (loadingTimeout) {
+            clearTimeout(loadingTimeout);
+            loadingTimeout = null;
+        }
+        loading_store.value = false;
+        currentNavigationId = null;
+    });
 </script>
 
 <template>
+    <Spiner v-if="loading_store"/>
     <nav class="border-b border-gray-800">
         <div class="container mx-auto px-4 flex flex-col md:flex-row items-center justify-between py-6">
             <ul class="flex flex-col md:flex-row items-center">

@@ -131,7 +131,7 @@
                             </div>
                         </div>
                     </div>
-               </div>
+        </div>
         </div>
     </div> <!-- end tv-cast -->
 
@@ -143,7 +143,6 @@
                         <a
                             @click.prevent="() => {
                                 if($imgs.file_path){
-                                    console.info($imgs.file_path);
                                     images = 'https://image.tmdb.org/t/p/original'+$imgs.file_path;
                                 }
                             }
