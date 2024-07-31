@@ -49,19 +49,19 @@ const { stop } = useIntersectionObserver(
     {threshold: 0.5}
 );
 
-const checkScrollTop = () => {
-  if (window.scrollY === 0) {
-    router.replace(route('actors.index'));    
-  }
-};
+    const checkScrollTop = () => {
+    if (window.scrollY === 0) {
+        router.replace(route('actors.index'));    
+    }
+    };
 
-onMounted(() => {
-  window.addEventListener('scroll', checkScrollTop);
-});
+    onMounted(() => {
+    window.addEventListener('scroll', checkScrollTop);
+    });
 
-onUnmounted(() => {
-  window.removeEventListener('scroll', checkScrollTop);
-});
+    onUnmounted(() => {
+    window.removeEventListener('scroll', checkScrollTop);
+    });
 </script>
 
 <template>

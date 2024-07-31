@@ -4,50 +4,66 @@ namespace App\Http\Controllers;
 
 use App\Models\MoviesViewModel;
 use App\Models\MovieViewModel;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Inertia\Inertia;
 
+
 class MoviesController extends Controller
 {
-    public function index()
+    public function index($page = 1)
     {
-        try {
-        $popularMovies = Http
-        ::withToken(config('services.tmdb.token'))
-            ->get('https://api.themoviedb.org/3/movie/popular')
-            ->json()['results'];
+        $client = new \GuzzleHttp\Client();
 
-        $nowPlayingMovies = Http::withToken(config('services.tmdb.token'))
-            ->get('https://api.themoviedb.org/3/movie/now_playing')
-            ->json()['results'];
+        try {            
+            $popularMovies = $client->request('GET', URL."movie/popular", [
+                    'headers' => [
+                        'Authorization' => TOKENB,
+                        'accept' => APPJSON,
+                    ],
+            ]);
+            
+            $nowPlayingMovies = $client->request('GET', URL."movie/now_playing?page={$page}", [
+                'headers' => [
+                    'Authorization' => TOKENB,
+                    'accept' => APPJSON,
+                ],
+            ]);
+            
+            $genres = $client->request('GET', URL."genre/movie/list", [
+                'headers' => [
+                    'Authorization' => TOKENB,
+                    'accept' => APPJSON,
+                ],
+            ]);
 
-        $genres = Http::withToken(config('services.tmdb.token'))
-            ->get('https://api.themoviedb.org/3/genre/movie/list')
-            ->json()['genres'];
+            $resPopularMovies = $popularMovies->getBody()->getContents();
+            $resNowPlayingMovies = $nowPlayingMovies->getBody()->getContents();
+            $resGenres = $genres->getBody()->getContents();
 
-        $viewModel = new MoviesViewModel(
-            $popularMovies,
-            $nowPlayingMovies,
-            $genres,
-        );
-        return Inertia::render('Welcome',['data' => $viewModel]);
+            $popularMovie = json_decode($resPopularMovies, true);
+            $nowPlayingMovie = json_decode($resNowPlayingMovies, true);
+            $genre = json_decode($resGenres, true); 
+
+            $viewModel = new MoviesViewModel(
+                $popularMovie['results'],
+                $nowPlayingMovie['results'],
+                $genre['genres'],
+            );
+            return Inertia::render('Welcome',['data' => $viewModel]);
     } catch (\Throwable $th) {
-        $viewModel = [
-            'popularMovies' => '',
-            'nowPlayingMovies' => '',
-            'genres' => '',
-        ];
-        return Inertia::render('Welcome',['data' => $viewModel]);
-    }
+            $viewModel = [
+                'popularMovies' => '',
+                'nowPlayingMovies' => '',
+                'genres' => '',
+            ];
+            return Inertia::render('Welcome',['data' => $viewModel]);
+        }
     }
 
     public function show($id)
     {
         try {
-            $movie = Http::withToken(config('services.tmdb.token'))
-            ->get('https://api.themoviedb.org/3/movie/'.$id.'?append_to_response=credits,videos,images')
-            ->json();
+            $movie = Http::withToken(TOKEN)->get(URL."movie/{$id}?append_to_response=credits,videos,images")->json();
             $viewModel = new MovieViewModel($movie);
             return Inertia::render('Movie/MovieDetail',['data' => $viewModel]);
         } catch (\Throwable $th) {

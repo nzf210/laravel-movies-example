@@ -115,9 +115,9 @@
                                                     <iframe 
                                                       class="responsive-iframe absolute top-0 left-0 w-full h-full" 
                                                       :title="'full-movie'" 
-                                                      :src="`https://vidsrc.to/embed/movie/${props.data.movie.id}`" 
                                                       style="border:0;" 
                                                       allow="autoplay; encrypted-media" 
+                                                      :src="`https://multiembed.mov/?video_id=${props.data.movie.id}&tmdb=1`" 
                                                       allowfullscreen>
                                                     </iframe>
                                                   </div>

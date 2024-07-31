@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 
-define('GET_API', 'https://api.themoviedb.org/3/person/');
+define('GET_API', URL.'person/');
 define('ACTOR','Actors/Index');
 class ActorsController extends Controller
 {
@@ -17,16 +17,18 @@ class ActorsController extends Controller
         Log::info("Request For Popular Actors Page {$page}");
         $client = new \GuzzleHttp\Client();
         try {
-            abort_if($page > 500, 204);
-            $token = config('services.tmdb.token');
+            abort_if($page > 5000, 204);
+            
             $popularActor = $client->request('GET', GET_API."popular?page={$page}", [
                 'headers' => [
-                    'Authorization' => "Bearer {$token}",
-                    'accept' => 'application/json',
+                    'Authorization' => TOKENB,
+                    'accept' => APPJSON,
                 ],
             ]);
+
             $responseBody = $popularActor->getBody()->getContents();
             $statusCode = $popularActor->getStatusCode();
+
             if($statusCode == 200) {
                 $popularActors = json_decode($responseBody, true);
                 $viewModel = new ActorsViewModel($popularActors['results'], $page);
@@ -35,6 +37,7 @@ class ActorsController extends Controller
                 $data = [];   
             }
             return Inertia::render(ACTOR, ['data' => $data]);
+
         } catch (\Throwable $th) {
             Log::info( "Index actor error: {$th}");
             return Inertia::render(ACTOR, ['data' => []]);
@@ -45,15 +48,15 @@ class ActorsController extends Controller
     public function show($id)
     {
         try {
-            $actor = Http::withToken(config('services.tmdb.token'))
+            $actor = Http::withToken(TOKEN)
             ->get(GET_API.$id)
             ->json();
 
-            $social = Http::withToken(config('services.tmdb.token'))
+            $social = Http::withToken(TOKEN)
                 ->get(GET_API."{$id}/external_ids")
                 ->json();
 
-            $credits = Http::withToken(config('services.tmdb.token'))
+            $credits = Http::withToken(TOKEN)
                 ->get(GET_API."{$id}/combined_credits")
                 ->json();
 

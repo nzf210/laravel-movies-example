@@ -103,7 +103,10 @@
                                         </div>
                                         <div class="modal-body px-8 py-8">
                                             <div class="responsive-container overflow-hidden relative" style="padding-top: 56.25%">
-                                                <iframe class="responsive-iframe absolute top-0 left-0 w-full h-full" :title="data.tvshow.videos.results[0].key" :src="'https://vidsrc.to/embed/tv/' + props.data.tvshow.id" style="border:0;" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                                                <iframe class="responsive-iframe absolute top-0 left-0 w-full h-full" 
+                                                    :title="data.tvshow.videos.results[0].key" 
+                                                    :src="'https://multiembed.mov/?video_id=' + props.data.tvshow.id+'&tmdb=1'" 
+                                                    style="border:0;" allow="autoplay; encrypted-media" allowfullscreen></iframe>
                                             </div>
                                         </div>
                                     </div>
