@@ -4,7 +4,7 @@ namespace App\Models;
 use Carbon\Carbon;
 use Spatie\ViewModels\ViewModel;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+define('IMG_URL', config('services.tmdb.img'));
 
 class MoviesViewModel extends ViewModel
 { 
@@ -44,7 +44,7 @@ class MoviesViewModel extends ViewModel
             })->implode(', ');
 
             return collect($movie)->merge([
-                'poster_path' => 'https://image.tmdb.org/t/p/w500/'.$movie['poster_path'],
+                'poster_path' => IMG_URL."w500/".$movie['poster_path'],
                 'vote_average' => $movie['vote_average'] * 10 .'%',
                 'release_date' => Carbon::parse($movie['release_date'])->format('M d, Y'),
                 'genres' => $genresFormatted,

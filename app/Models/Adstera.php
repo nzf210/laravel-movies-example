@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Adstera extends Model
 {
     use HasFactory;
+    protected $table = 'adstera';
+    protected $fillable = [
+        'adstera_url'
+    ];
 }

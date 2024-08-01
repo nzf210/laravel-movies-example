@@ -37,6 +37,7 @@ return [
     'tmdb' => [
         'token' => env('TMDB_TOKEN'),
         'url' => env('MOVIE_URL'),
+        'img' => env('TMDB_IMAGE')
     ],
 
 ];

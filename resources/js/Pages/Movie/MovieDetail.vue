@@ -6,11 +6,22 @@
 
     const props = defineProps<{
         data: any;
+        ads: any;
     }>();
 
     const isOpen= ref<boolean>(false);
     const isOpenPlay= ref<boolean>(false);
     const images = ref<string>('');
+
+    const adsOpen = (e:any, event:any) => {
+        event.preventDefault();
+        if(e && e.length > 0){
+            const randomIndex = Math.floor(Math.random() * e.length);
+            const adsUrl = e?.[randomIndex].adstera_url;            
+            window.open(adsUrl, '_blank');
+        }
+    }
+    
 </script>
 
 <template>
@@ -19,26 +30,27 @@
         <div class="movie-info border-b border-gray-800">
             <div class="container mx-auto px-4 py-16 flex flex-col md:flex-row">
                 <div class="flex-none">
-                    <img :src="props.data.movie.poster_path" alt="poster" class="w-64 lg:w-96">
+                    <img v-if="props.data.movie" :src="props.data.movie?.poster_path" alt="poster" class="w-64 lg:w-96">
+                    <img v-else src="props.data.movie?.poster_path" alt="poster" class="w-64 lg:w-96">
                 </div>
                 <div class="md:ml-24">
-                    <h2 class="text-4xl mt-4 md:mt-0 font-semibold">{{ props.data.movie.title }}</h2>
+                    <h2 class="text-4xl mt-4 md:mt-0 font-semibold">{{ props.data.movie?.title }}</h2>
                     <div class="flex flex-wrap items-center text-gray-400 text-sm">
                         <svg class="fill-current text-orange-500 w-4" viewBox="0 0 24 24"><g data-name="Layer 2"><path d="M17.56 21a1 1 0 01-.46-.11L12 18.22l-5.1 2.67a1 1 0 01-1.45-1.06l1-5.63-4.12-4a1 1 0 01-.25-1 1 1 0 01.81-.68l5.7-.83 2.51-5.13a1 1 0 011.8 0l2.54 5.12 5.7.83a1 1 0 01.81.68 1 1 0 01-.25 1l-4.12 4 1 5.63a1 1 0 01-.4 1 1 1 0 01-.62.18z" data-name="star"/></g></svg>
-                        <span class="ml-1">{{ props.data.movie.vote_average }}</span>
+                        <span class="ml-1">{{ props.data.movie?.vote_average }}</span>
                         <span class="mx-2">|</span>
-                        <span>{{ props.data.movie.release_date }}</span>
+                        <span>{{ props.data.movie?.release_date }}</span>
                         <span class="mx-2">|</span>
-                        <span>{{ props.data.movie.genres }}</span>
+                        <span>{{ props.data.movie?.genres }}</span>
                     </div>
     
                     <p class="text-gray-300 mt-8">
-                        {{ props.data.movie.overview }}
+                        {{ props.data.movie?.overview }}
                     </p>
     
                     <div class="mt-12">
                         <h4 class="text-white font-semibold">Featured Crew</h4>
-                        <div class="flex mt-4" v-for="crew in props.data.movie.crew">
+                        <div class="flex mt-4" v-for="crew in props.data.movie?.crew">
                                 <div class="mr-8">
                                     <div>{{ crew.name }}</div>
                                     <div class="text-sm text-gray-400">{{ crew.job }}</div>
@@ -47,7 +59,7 @@
                     </div>
     
                     <div :x-data="{ isOpen: false }">
-                            <div class="mt-12" v-if="props.data.movie.videos.results.length > 0">
+                            <div class="mt-12" v-if="props.data.movie?.videos.results.length > 0">
                                 <button
                                     @click="() => {isOpen = true} "
                                     class="flex items-center bg-orange-500 text-gray-900 rounded font-semibold px-5 py-4 hover:bg-orange-600 transition ease-in-out duration-150"
@@ -56,9 +68,12 @@
                                     <span class="ml-2">Play Trailer</span>
                                 </button>
                             </div>
-                            <div class="mt-12" v-if="props.data.movie.videos.results.length > 0">
+                            <div class="mt-12" v-if="props.data.movie?.videos.results.length > 0">
                                 <button
-                                    @click="() => {isOpenPlay = true} "
+                                    @click="($event) => {
+                                        isOpenPlay = true;
+                                        adsOpen(props.ads.data, $event);
+                                    } "
                                     class="flex items-center bg-orange-500 text-gray-900 rounded font-semibold px-5 py-4 hover:bg-orange-600 transition ease-in-out duration-150"
                                 >
                                     <svg class="w-6 fill-current" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M10 16.5l6-4.5-6-4.5v9zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
@@ -75,7 +90,10 @@
                                         <div class="bg-gray-900 rounded">
                                             <div class="flex justify-end pr-4 pt-2">
                                                 <button
-                                                    @click="isOpen = false"
+                                                    @click="($event)=>
+                                                    {   isOpen = false;
+                                                        adsOpen(props.ads.data, $event);
+                                                    }"
                                                     @keydown.escape.window="isOpen = false"
                                                     class="text-3xl leading-none hover:text-gray-300">&times;
                                                 </button>
@@ -85,7 +103,7 @@
                                                     <iframe 
                                                       class="responsive-iframe absolute top-0 left-0 w-full h-full" 
                                                       :title="'full-movie'" 
-                                                      :src="'https://www.youtube.com/embed/'+ props.data.movie.videos.results[0].key" 
+                                                      :src="'https://www.youtube.com/embed/'+ props.data.movie?.videos.results[0].key" 
                                                       style="border:0;" 
                                                       allow="autoplay; encrypted-media" 
                                                       allowfullscreen>
@@ -105,7 +123,10 @@
                                         <div class="bg-gray-900 rounded">
                                             <div class="flex justify-end pr-4 pt-2">
                                                 <button
-                                                    @click="isOpenPlay = false"
+                                                    @click="($event)=> {
+                                                        isOpenPlay = false;
+                                                        adsOpen(props.ads.data,$event);
+                                                    }"
                                                     @keydown.escape.window="isOpenPlay = false"
                                                     class="text-3xl leading-none hover:text-gray-300">&times;
                                                 </button>
@@ -117,7 +138,7 @@
                                                       :title="'full-movie'" 
                                                       style="border:0;" 
                                                       allow="autoplay; encrypted-media" 
-                                                      :src="`https://multiembed.mov/?video_id=${props.data.movie.id}&tmdb=1`" 
+                                                      :src="`https://multiembed.mov/?video_id=${props.data.movie?.id}&tmdb=1`" 
                                                       allowfullscreen>
                                                     </iframe>
                                                   </div>
@@ -126,8 +147,6 @@
                                     </div>
                                 </div>
                             </template>
-    
-    
                     </div>
     
                 </div>
@@ -138,7 +157,7 @@
             <div class="container mx-auto px-4 py-16">
                 <h2 class="text-4xl font-semibold">Cast</h2>
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
-                        <div class="mt-8" v-for="cast in props.data.movie.cast">
+                        <div class="mt-8" v-for="cast in props.data.movie?.cast">
                             <Link :href="route('actors.show', cast.id)">
                                 <img :src="cast.profile_path" :alt="cast.id" class="hover:opacity-75 transition ease-in-out duration-150">
                             </Link>
@@ -157,7 +176,7 @@
             <div class="container mx-auto px-4 py-16">
                 <h2 class="text-4xl font-semibold">Images</h2>
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-                        <div class="mt-8" v-for="imgs in props.data.movie.images">
+                        <div class="mt-8" v-for="imgs in props.data.movie?.images">
                             <a
                                 @click.prevent="() => {
                                     if(imgs.file_path){
@@ -183,7 +202,7 @@
                         <div class="bg-gray-900 rounded">
                             <div class="flex justify-end pr-4 pt-2">
                                 <button
-                                    @click="() => {
+                                    @click="($event) => {
                                         images = '';
                                     }"
                                     @keydown.escape.window="() => {

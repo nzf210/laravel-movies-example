@@ -14,6 +14,9 @@
         "APP_DEBUG": "false",
         "APP_URL": "https://movie210.vercel.app",
         "APP_KEY": "base64:7wUxlLX+nrCDCmEQYeadd0OzjUwk/HmFaFF+5Unavlk=",
+        "TMDB_TOKEN":"eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxMDBhMmRjNWJhMmQ3N2JkMGNhZmU0ODgyZGUwZDBlMyIsIm5iZiI6MTcyMjA4OTE2OC42MDU2MjQsInN1YiI6IjY2YTE2ODliODE0ODNlOWVhMTgwY2QyYSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.5DPRRJs9Q4bDNBa-us7elk6wisSsvPSYn7KXmns3K5A",
+        "MOVIE_URL":"https://api.themoviedb.org/3/",
+        "TMDB_IMAGE":"https://image.tmdb.org/t/p/",
 
 
         "APP_CONFIG_CACHE": "/tmp/config.php",
