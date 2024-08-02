@@ -6,6 +6,7 @@ use App\Http\Resources\AdsteraResource;
 use App\Models\Adstera;
 use App\Models\MoviesViewModel;
 use App\Models\MovieViewModel;
+use App\Models\UrlFilm;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
@@ -70,13 +71,24 @@ class MoviesController extends Controller
     {
         try {
             $adstera = Adstera::get();
+            $film_url = UrlFilm::where('film_id', $id)->first();
+            if(is_null($film_url)) {
+                $film_url = UrlFilm::where('film_id', '1')->first();
+            }
+            $url = str_replace('${myid}', $id, $film_url->film_url);
+            
             $movie = Http::withToken(TOKEN)->get(URL."movie/{$id}?append_to_response=credits,videos,images")->json();
             $viewModel = new MovieViewModel($movie);
-            return Inertia::render('Movie/MovieDetail',['data' => $viewModel, 'ads' => AdsteraResource::collection($adstera)]);
+            
+            return Inertia::render('Movie/MovieDetail',
+                                    [   'data' => $viewModel, 
+                                        'ads' => AdsteraResource::collection($adstera), 
+                                        'film' => $url
+                                    ]);
         } catch (\Throwable $th) {
             Log::info("Error Show Movies {$th}");
             $viewModel = new MovieViewModel([]);
-            return Inertia::render('Movie/MovieDetail',['data' => [], 'ads' => []]);
+            return Inertia::render('Movie/MovieDetail',['data' => [], 'ads' => [], 'film' => []]);
         }
     }
 }

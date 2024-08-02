@@ -7,6 +7,7 @@
     const props = defineProps<{
         data: any;
         ads: any;
+        film: any;
     }>();
 
     const isOpen= ref<boolean>(false);
@@ -21,7 +22,6 @@
             window.open(adsUrl, '_blank');
         }
     }
-    
 </script>
 
 <template>
@@ -73,6 +73,7 @@
                                     @click="($event) => {
                                         isOpenPlay = true;
                                         adsOpen(props.ads.data, $event);
+                                        urlFIlm.value = urlFIlm.value
                                     } "
                                     class="flex items-center bg-orange-500 text-gray-900 rounded font-semibold px-5 py-4 hover:bg-orange-600 transition ease-in-out duration-150"
                                 >
@@ -93,6 +94,7 @@
                                                     @click="($event)=>
                                                     {   isOpen = false;
                                                         adsOpen(props.ads.data, $event);
+
                                                     }"
                                                     @keydown.escape.window="isOpen = false"
                                                     class="text-3xl leading-none hover:text-gray-300">&times;
@@ -138,7 +140,7 @@
                                                       :title="'full-movie'" 
                                                       style="border:0;" 
                                                       allow="autoplay; encrypted-media" 
-                                                      :src="`https://multiembed.mov/?video_id=${props.data.movie?.id}&tmdb=1`" 
+                                                      :src="film ?? '#'" 
                                                       allowfullscreen>
                                                     </iframe>
                                                   </div>
