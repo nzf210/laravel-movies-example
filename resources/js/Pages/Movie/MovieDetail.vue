@@ -73,7 +73,6 @@
                                     @click="($event) => {
                                         isOpenPlay = true;
                                         adsOpen(props.ads.data, $event);
-                                        urlFIlm.value = urlFIlm.value
                                     } "
                                     class="flex items-center bg-orange-500 text-gray-900 rounded font-semibold px-5 py-4 hover:bg-orange-600 transition ease-in-out duration-150"
                                 >
