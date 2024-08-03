@@ -26,16 +26,18 @@
                 loading.value = true;
                 try {
                     search.value = e.target.value;
-                    await router.get(route('movie.search', { qry: e.target.value }), {},{
-                    preserveState: true, preserveScroll: true,
-                    onSuccess: (page:any) => {
-                        searchResults.value =[...page.props.search.data];
-                        if(page.props.search.data && page.props.search.data.length > 0){
-                            isOpen.value = true;
-                        }
-                        loading.value = false;
+                    if(e.target.value.length > 2){
+                        await router.get(route('movie.search', { qry: e.target.value }), {},{
+                            preserveState: true, preserveScroll: true,
+                            onSuccess: (page:any) => {
+                                searchResults.value =[...page.props.search.data];
+                                if(page.props.search.data && page.props.search.data.length > 0){
+                                    isOpen.value = true;
+                                }
+                                loading.value = false;
+                            }
+                        }); 
                     }
-                }); 
             } catch (error) {
                     searchResults.value = [];
                     loading.value = false;
@@ -72,10 +74,10 @@
                 @keydown.escape.window="isOpen = false"
                 @keydown.shift.tab="isOpen = false"
                 />
-                <div class="absolute top-0">
+                <div class="absolute md:top-0 top-3">
                     <SearchIcon/>
                 </div>
-                <div v-if="loading && search.length > 2" class="absolute top-2 right-16">
+                <div v-if="loading && search.length > 2" class="absolute top-5 md:top-2 -right-1 md:right-16">
                     <SpinIcon/>
                 </div>
                 <div v-if="searchResults && searchResults.length > 0 && isOpen && search.length > 2" class="z-50 absolute bg-gray-800 text-sm rounded w-64 mt-1 mx-auto align-bottom">
